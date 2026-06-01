@@ -1,0 +1,14 @@
+{
+  "name": "radio-stress-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "eventsource": "^2.0.2"
+  },
+  "engines": {
+    "node": ">=22.11.0"
+  }
+}
