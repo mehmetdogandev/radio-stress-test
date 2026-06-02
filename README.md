@@ -42,6 +42,9 @@ npm run test:network
 
 İnteraktif olarak IP/port sorar, mDNS `_radio._tcp` tarar (`aksiyonsoft` filtre), `/health` ve `/status` doğrular, TCP/UDP probe çalıştırır.
 
+- **IP alanını boş bırakırsanız**, hedef mDNS sonuçlarından otomatik seçilir (`source=mdns`).
+- mDNS sonuçlarında IPv4/IPv6 adresi olan ilk uygun cihaza bağlanılır.
+
 ### 2) Ses yük / sıcaklık testi
 
 ```bash
@@ -56,6 +59,8 @@ Her iki komut da `reports/` altında JSON raporu üretir:
 - `network-report-*.json`
 - `voice-load-report-*.json`
 - `last-mdns-snapshot.json` (ağ değişimi karşılaştırması için)
+
+`reports/` klasörü yalnızca lokal teşhis içindir, repoya gönderilmez (`.gitignore`).
 
 ## Ortam değişkenleri
 

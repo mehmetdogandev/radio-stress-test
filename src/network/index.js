@@ -26,6 +26,23 @@ function parsePort(raw, fallback) {
   return value;
 }
 
+function isIpv6Address(value) {
+  return value.includes(":");
+}
+
+function wrapHostForUrl(host) {
+  if (!isIpv6Address(host)) return host;
+  if (host.startsWith("[") && host.endsWith("]")) return host;
+  return `[${host}]`;
+}
+
+function pickBestMdnsAddress(addresses) {
+  const list = Array.isArray(addresses) ? addresses.filter(Boolean) : [];
+  if (list.length === 0) return null;
+  const ipv4 = list.find((item) => !isIpv6Address(item));
+  return ipv4 ?? list[0];
+}
+
 async function askQuestions() {
   const argIp = getArgValue("ip");
   const argHttpPort = getArgValue("http-port");
@@ -85,11 +102,12 @@ async function askQuestions() {
 
 function chooseTarget({ ip, httpPort, mdnsResult }) {
   if (ip) return { host: ip, source: "manual-ip" };
-  const first = mdnsResult?.services?.find((item) => (item.addresses?.length ?? 0) > 0);
+  const first = mdnsResult?.services?.find((item) => pickBestMdnsAddress(item.addresses));
   if (!first) {
     throw new Error("IP girilmedi ve mDNS hedefi bulunamadi.");
   }
-  return { host: first.addresses[0], source: "mdns", mdnsHost: first.host };
+  const selectedAddress = pickBestMdnsAddress(first.addresses);
+  return { host: selectedAddress, source: "mdns", mdnsHost: first.host };
 }
 
 function printMdnsServices(mdnsResult) {
@@ -126,7 +144,7 @@ async function runNetworkTest() {
   }
 
   const target = chooseTarget({ ip: answers.ip, httpPort: answers.httpPort, mdnsResult });
-  const baseUrl = `http://${target.host}:${answers.httpPort}`;
+  const baseUrl = `http://${wrapHostForUrl(target.host)}:${answers.httpPort}`;
   console.log(`Hedef secildi: ${baseUrl} (${target.source})`);
 
   try {
