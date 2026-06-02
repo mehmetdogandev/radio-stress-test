@@ -3,10 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test:network": "node src/network/index.js",
+    "test:voice-load": "node src/load/index.js"
   },
   "dependencies": {
-    "eventsource": "^2.0.2"
+    "eventsource": "^2.0.2",
+    "multicast-dns": "^7.2.5"
   },
   "engines": {
     "node": ">=22.11.0"

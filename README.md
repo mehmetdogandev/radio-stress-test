@@ -32,6 +32,31 @@ mDNS ile Pi:
 SERVER_BASE_URL=http://aksiyonsoft-radio-a1b2c3.local:8080 npm start
 ```
 
+## Yeni dış test komutları
+
+### 1) Ağ / keşif testi
+
+```bash
+npm run test:network
+```
+
+İnteraktif olarak IP/port sorar, mDNS `_radio._tcp` tarar (`aksiyonsoft` filtre), `/health` ve `/status` doğrular, TCP/UDP probe çalıştırır.
+
+### 2) Ses yük / sıcaklık testi
+
+```bash
+npm run test:voice-load -- --listeners 20 --duration-min 10 --status-interval-sec 5
+```
+
+1 konuşmacı + 20-30 dinleyici senaryosunu başlatır ve test boyunca `/status` üzerinden sıcaklık/memory/UDP sağlık metriklerini toplar.
+
+### JSON raporları
+
+Her iki komut da `reports/` altında JSON raporu üretir:
+- `network-report-*.json`
+- `voice-load-report-*.json`
+- `last-mdns-snapshot.json` (ağ değişimi karşılaştırması için)
+
 ## Ortam değişkenleri
 
 | Değişken | Varsayılan | Açıklama |

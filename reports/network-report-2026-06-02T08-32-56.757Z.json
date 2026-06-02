@@ -1,0 +1,59 @@
+{
+  "kind": "network",
+  "createdAt": "2026-06-02T08:32:56.756Z",
+  "input": {
+    "ip": "127.0.0.1",
+    "httpPort": 8080,
+    "udpPort": 5004,
+    "mdnsEnabled": false,
+    "mdnsTimeoutMs": 12000,
+    "compareNetworks": false
+  },
+  "target": {
+    "host": "127.0.0.1",
+    "source": "manual-ip",
+    "baseUrl": "http://127.0.0.1:8080"
+  },
+  "mdns": {
+    "services": [],
+    "meta": null
+  },
+  "checks": [
+    {
+      "name": "mDNS _radio._tcp kesfi",
+      "ok": true,
+      "detail": "Kullanici tarafindan atlandi"
+    },
+    {
+      "name": "TCP baglanti",
+      "ok": false,
+      "detail": "8080 portuna baglanilamadi: connect ECONNREFUSED 127.0.0.1:8080"
+    },
+    {
+      "name": "UDP probe",
+      "ok": true,
+      "detail": "UDP packet sent (no ACK expected)",
+      "extra": {
+        "ok": true,
+        "elapsedMs": 1501,
+        "detail": "UDP packet sent (no ACK expected)"
+      }
+    },
+    {
+      "name": "GET /health",
+      "ok": false,
+      "detail": "Istek basarisiz: fetch failed"
+    },
+    {
+      "name": "GET /status",
+      "ok": false,
+      "detail": "Istek basarisiz: fetch failed"
+    }
+  ],
+  "summary": {
+    "pass": 2,
+    "fail": 3,
+    "total": 5
+  },
+  "networkChange": null
+}
